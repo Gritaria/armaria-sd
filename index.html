@@ -138,6 +138,9 @@
             
             <!-- Right Side: Buttons (Absolute) -->
             <div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4">
+                <button onclick="toggleWarehouse()" class="p-3 hover:bg-gun-brass/10 rounded-full transition-colors group border border-transparent hover:border-gun-brass/30" title="Armazém / Estoque">
+                    <i data-lucide="package" class="w-8 h-8 text-gun-brass group-hover:-translate-y-1 transition-transform duration-300"></i>
+                </button>
                 <button onclick="toggleWorkshop()" class="p-3 hover:bg-gun-brass/10 rounded-full transition-colors group border border-transparent hover:border-gun-brass/30" title="Oficina de Manufatura">
                     <i data-lucide="anvil" class="w-8 h-8 text-gun-brass group-hover:-translate-y-1 transition-transform duration-300"></i>
                 </button>
@@ -151,8 +154,8 @@
     <main class="container mx-auto px-4 py-8 max-w-7xl flex-grow flex flex-col lg:flex-row gap-8 relative z-10">
             
         <!-- Product Catalog -->
-        <div class="lg:w-2/3 flex flex-col gap-6 h-full">
-            <div class="overflow-y-auto custom-scrollbar pr-2 flex-grow min-h-[500px]" id="productsGrid">
+        <div class="lg:w-2/3 flex flex-col gap-6 h-[calc(100vh-150px)]">
+            <div class="overflow-y-auto custom-scrollbar pr-2 flex-grow min-h-[300px]" id="productsGrid">
                 <div class="text-center py-20 opacity-30">
                     <i data-lucide="hammer" class="w-12 h-12 animate-bounce mx-auto mb-4 text-gun-brass"></i>
                     <p class="font-western text-gun-paper">Polindo o aço...</p>
@@ -160,7 +163,7 @@
             </div>
 
             <!-- Services / Maintenance Panel -->
-            <div class="bg-gun-barrel border border-gun-brass/30 p-5 shadow-2xl rounded relative overflow-hidden shrink-0">
+            <div class="bg-gun-barrel border border-gun-brass/30 p-5 shadow-2xl rounded relative overflow-hidden shrink-0 mt-auto">
                 <div class="absolute top-0 right-0 p-2 opacity-5">
                     <i data-lucide="wrench" class="w-24 h-24"></i>
                 </div>
@@ -187,61 +190,62 @@
                         <i data-lucide="plus-circle" class="w-5 h-5"></i> Adicionar
                     </button>
                 </div>
-                <p class="text-[10px] text-gun-paper/40 font-typewriter mt-2 italic">* A taxa de serviço (Mão de Obra) de 30% será aplicada automaticamente sobre este valor.</p>
+                <p class="text-[10px] text-gun-paper/40 font-typewriter mt-2 italic">* A taxa de serviço (Mão de Obra) de 35% será aplicada automaticamente sobre este valor.</p>
             </div>
         </div>
 
         <!-- Receipt / Ledger -->
-        <div class="lg:w-1/3 h-auto lg:h-full sticky top-4 lg:static">
-            <div id="receiptArea" class="receipt-paper text-gray-900 p-1 font-ledger text-sm relative min-h-[600px] flex flex-col border-[6px] border-double border-gray-800 shadow-2xl transform rotate-[0.5deg]">
+        <div class="lg:w-1/3 h-full sticky top-4 lg:static">
+            <div id="receiptArea" class="receipt-paper text-gray-900 p-1 font-ledger text-sm relative h-[calc(100vh-150px)] flex flex-col border-[6px] border-double border-gray-800 shadow-2xl transform rotate-[0.5deg]">
                 
                 <!-- Inner Receipt Padding -->
-                <div class="border border-dashed border-gray-600/50 h-full flex flex-col p-5">
+                <div class="border border-dashed border-gray-600/50 h-full flex flex-col p-5 relative overflow-hidden">
 
                     <div id="receiptWatermark" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] hidden overflow-hidden z-0">
                         <img src="" class="w-3/4 object-contain grayscale contrast-150">
                     </div>
 
-                    <div class="relative z-10 flex flex-col h-full">
+                    <!-- Header (Fixed) -->
+                    <div class="relative z-10 shrink-0">
                         <div class="text-center border-b-2 border-gray-800 pb-4 mb-4">
                             <div class="flex flex-col items-center justify-center gap-2 mb-2">
                                 <img id="receiptLogo" src="" class="h-14 w-auto max-w-[100px] object-contain grayscale contrast-125 hidden mix-blend-multiply">
                                 <h2 id="receiptStoreTitle" class="font-western text-2xl uppercase tracking-widest leading-none break-words scale-y-110">BLACK BERETS</h2>
                             </div>
-                            <p class="text-[10px] uppercase mt-1 font-typewriter tracking-[0.2em] text-gray-700" id="receiptAddressDate">New Hanover, The Heartlands</p>
+                            <p class="text-[10px] uppercase mt-1 font-typewriter tracking-[0.2em] text-gray-700" id="receiptAddressDate">Saint Denis, Lemoyne</p>
                             <div class="w-full h-px bg-gray-800 mt-2"></div>
                             <div class="w-full h-px bg-gray-800 mt-1"></div>
                         </div>
+                    </div>
 
-                        <div class="flex-grow overflow-y-auto custom-scrollbar pr-1 max-h-[50vh]" id="cartItems">
-                            <div class="flex flex-col items-center justify-center h-40 text-gray-500/50 italic font-western">
-                                <span>A bancada está vazia...</span>
+                    <!-- Scrollable List -->
+                    <div class="relative z-10 flex-grow overflow-y-auto custom-scrollbar pr-1 mb-4" id="cartItems">
+                        <div class="flex flex-col items-center justify-center h-40 text-gray-500/50 italic font-western">
+                            <span>A bancada está vazia...</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer (Fixed at Bottom) -->
+                    <div class="relative z-10 mt-auto border-t-2 border-gray-800 pt-4 shrink-0 bg-gun-paper/90">
+                        <!-- Stamp effect -->
+                        <div class="absolute -top-6 right-2 transform rotate-12 border-2 border-red-800 text-red-800 px-2 py-1 font-western text-xs opacity-60 pointer-events-none">
+                            PAGO
+                        </div>
+
+                        <div class="space-y-1 mb-4 px-1">
+                            <div class="flex justify-between font-typewriter text-sm text-gray-700">
+                                <span>SUBTOTAL:</span>
+                                <span id="subtotalDisplay" class="font-bold">$0.00</span>
+                            </div>
+                            <div class="flex justify-between font-typewriter text-sm text-gray-700 items-center">
+                                <span id="serviceLabel" class="italic">SERVIÇOS:</span>
+                                <span id="serviceDisplay" class="font-bold">$0.00</span>
                             </div>
                         </div>
 
-                        <div class="mt-auto border-t-2 border-gray-800 pt-4 relative">
-                            <!-- Stamp effect -->
-                            <div class="absolute -top-6 right-2 transform rotate-12 border-2 border-red-800 text-red-800 px-2 py-1 font-western text-xs opacity-60 pointer-events-none">
-                                PAGO
-                            </div>
-
-                            <div class="space-y-1 mb-4 px-1">
-                                <div class="flex justify-between font-typewriter text-sm text-gray-700">
-                                    <span>SUBTOTAL:</span>
-                                    <span id="subtotalDisplay" class="font-bold">$0.00</span>
-                                </div>
-                                <div class="flex justify-between font-typewriter text-sm text-gray-700 items-center">
-                                    <span id="serviceLabel" class="italic">SERVIÇOS:</span>
-                                    <span id="serviceDisplay" class="font-bold">$0.00</span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between items-end font-western text-2xl text-gray-900 pt-2 border-t border-dashed border-gray-600">
-                                <span>TOTAL:</span>
-                                <span id="totalDisplay" class="text-3xl font-ledger font-bold underline decoration-double decoration-gray-400">$0.00</span>
-                            </div>
-                            
-                            <!-- Footer phrases removed -->
+                        <div class="flex justify-between items-end font-western text-2xl text-gray-900 pt-2 border-t border-dashed border-gray-600">
+                            <span>TOTAL:</span>
+                            <span id="totalDisplay" class="text-3xl font-ledger font-bold underline decoration-double decoration-gray-400">$0.00</span>
                         </div>
 
                         <div class="grid grid-cols-3 gap-3 mt-4" data-html2canvas-ignore="true">
@@ -398,6 +402,52 @@
         </div>
     </div>
 
+    <!-- WAREHOUSE MODAL (Stock Management) -->
+    <div id="warehouseModal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity opacity-0 pointer-events-none">
+        <div class="bg-gun-barrel w-full max-w-4xl h-[85vh] flex flex-col border-2 border-gun-brass relative overflow-hidden transform scale-95 transition-transform shadow-[0_0_50px_rgba(0,0,0,1)]" id="warehouseModalContent">
+            
+            <div class="p-5 flex justify-between items-center border-b border-gun-brass/20 shrink-0 bg-gun-metal">
+                <div class="flex items-center gap-4">
+                    <div class="p-2 border border-gun-brass rounded bg-black/30">
+                        <i data-lucide="package" class="w-8 h-8 text-gun-brass"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-western text-3xl tracking-widest text-gun-brass">ARMAZÉM</h2>
+                        <p class="font-typewriter text-xs text-gun-brass/60 tracking-[0.2em] uppercase">Controle de Estoque & Matéria-Prima</p>
+                    </div>
+                </div>
+                <button onclick="toggleWarehouse()" class="hover:text-gun-paper transition-colors text-gun-brass/50"><i data-lucide="x" class="w-8 h-8"></i></button>
+            </div>
+
+            <div class="flex flex-col h-full overflow-hidden relative">
+                <!-- Background Texture -->
+                <div class="absolute inset-0 pointer-events-none opacity-5 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] z-0"></div>
+
+                <div class="flex-grow overflow-y-auto custom-scrollbar p-6 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8" id="warehouseGrid">
+                    <!-- Raw Materials Column -->
+                    <div class="bg-black/30 p-4 rounded border border-gun-brass/10 h-fit">
+                        <h3 class="font-western text-xl mb-4 text-blue-300 border-b border-blue-500/20 pb-2 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="layers" class="w-5 h-5"></i> Matéria-Prima
+                        </h3>
+                        <div id="warehouseRawList" class="space-y-3">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Components Column -->
+                    <div class="bg-black/30 p-4 rounded border border-gun-brass/10 h-fit">
+                        <h3 class="font-western text-xl mb-4 text-yellow-500 border-b border-yellow-500/20 pb-2 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="settings" class="w-5 h-5"></i> Componentes
+                        </h3>
+                        <div id="warehouseComponentList" class="space-y-3">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- WORKSHOP MODAL (Crafting Calculator) -->
     <div id="workshopModal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity opacity-0 pointer-events-none">
         <div class="bg-gun-barrel w-full max-w-5xl h-[90vh] flex flex-col border-2 border-gun-brass relative overflow-hidden transform scale-95 transition-transform shadow-[0_0_50px_rgba(0,0,0,1)]" id="workshopModalContent">
@@ -409,21 +459,20 @@
                     </div>
                     <div>
                         <h2 class="font-western text-3xl tracking-widest text-gun-brass">OFICINA DE MANUFATURA</h2>
-                        <p class="font-typewriter text-xs text-gun-brass/60 tracking-[0.2em] uppercase">Calculadora de Materiais</p>
+                        <p class="font-typewriter text-xs text-gun-brass/60 tracking-[0.2em] uppercase">Gestão de Produção</p>
                     </div>
                 </div>
                 <button onclick="toggleWorkshop()" class="hover:text-gun-paper transition-colors text-gun-brass/50"><i data-lucide="x" class="w-8 h-8"></i></button>
             </div>
 
             <div class="flex flex-col lg:flex-row h-full overflow-hidden relative">
-                <!-- Background Texture -->
                 <div class="absolute inset-0 pointer-events-none opacity-5 bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')] z-0"></div>
 
                 <!-- Selection Column -->
                 <div class="lg:w-1/2 p-6 flex flex-col border-r border-gun-brass/20 overflow-y-auto custom-scrollbar relative z-10 bg-gun-barrel/50">
                     <div class="mb-6 relative">
                          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gun-brass/50 w-5 h-5"></i>
-                         <input type="text" id="recipeSearch" placeholder="PROCURAR PROJETO..." oninput="renderRecipes(this.value)" class="w-full bg-black/40 border border-gun-brass/30 p-3 pl-10 font-typewriter text-gun-paper focus:outline-none focus:border-gun-brass rounded placeholder-gun-brass/30 uppercase">
+                         <input type="text" id="recipeSearch" placeholder="O QUE VAMOS FABRICAR?" oninput="renderRecipes(this.value)" class="w-full bg-black/40 border border-gun-brass/30 p-3 pl-10 font-typewriter text-gun-paper focus:outline-none focus:border-gun-brass rounded placeholder-gun-brass/30 uppercase">
                     </div>
 
                     <div id="recipeList" class="space-y-3 pb-10">
@@ -434,24 +483,16 @@
                 <!-- Calculation Column -->
                 <div class="lg:w-1/2 flex flex-col bg-black/30 relative z-10">
                     <div class="p-6 border-b border-dashed border-gun-brass/20 flex-grow overflow-y-auto custom-scrollbar">
-                         <h3 class="font-western text-2xl mb-4 flex items-center gap-2 text-gun-paper"><i data-lucide="clipboard-list" class="w-6 h-6 text-gun-brass"></i> Lista de Produção</h3>
+                         <h3 class="font-western text-xl mb-4 flex items-center gap-2 text-gun-paper uppercase"><i data-lucide="clipboard-list" class="w-5 h-5 text-gun-brass"></i> Fila de Produção</h3>
                          <div id="workshopQueue" class="space-y-2 mb-6">
-                            <p class="text-gun-paper/30 font-typewriter italic">A fila de produção está vazia.</p>
+                            <p class="text-gun-paper/30 font-typewriter italic">Selecione projetos à esquerda...</p>
                          </div>
 
                          <div class="w-full h-px bg-gun-brass/20 my-6"></div>
 
-                         <h3 class="font-western text-xl mb-4 flex items-center gap-2 text-gun-brass"><i data-lucide="boxes" class="w-5 h-5"></i> Componentes Diretos</h3>
-                         <div id="workshopMaterials" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                             <!-- Direct totals injected here -->
-                         </div>
-
-                         <div class="bg-black/40 p-4 rounded border border-gun-brass/10">
-                             <h3 class="font-western text-xl mb-4 flex items-center gap-2 text-blue-300"><i data-lucide="layers" class="w-5 h-5"></i> Matéria-Prima Total</h3>
-                             <p class="text-xs text-gun-paper/50 mb-3 font-typewriter">Recursos base para produzir todos os componentes acima.</p>
-                             <div id="workshopRawMaterials" class="grid grid-cols-1 gap-2">
-                                 <!-- Raw totals injected here -->
-                             </div>
+                         <h3 class="font-western text-xl mb-4 flex items-center gap-2 text-gun-brass uppercase"><i data-lucide="boxes" class="w-5 h-5"></i> Análise de Produção</h3>
+                         <div id="workshopAnalysis" class="space-y-4">
+                             <!-- Analysis Items injected here -->
                          </div>
                     </div>
                     
@@ -460,7 +501,7 @@
                              <i data-lucide="trash-2" class="w-4 h-4"></i> Limpar Mesa
                          </button>
                          <div class="font-typewriter text-sm text-gun-paper/60">
-                             Total de Itens: <span id="workshopTotalItems" class="text-gun-brass font-bold text-lg">0</span>
+                             Total: <span id="workshopTotalItems" class="text-gun-brass font-bold text-lg">0</span>
                          </div>
                     </div>
                 </div>
@@ -486,116 +527,106 @@
         const ICONS_MAP = ['crosshair', 'target', 'shield', 'sword', 'hammer', 'wrench', 'circle-dot', 'triangle', 'square', 'hexagon', 'star', 'skull'];
         const COLORS_MAP = ['#b59b56', '#95a5a6', '#5d4037', '#2c3e50', '#c0392b', '#1a1a1a'];
         
-        // Quotes array removed
-
         const DEFAULT_STORE_NAME = "Black Berets";
         const DEFAULT_STORE_ADDRESS = "Saint Denis, Lemoyne";
         
         const DEFAULT_PRODUCTS = [
             // REVÓLVERES
-            { id: '1', name: 'Navy', priceMax: 170.00, priceMin: 120.00, category: 'Revólveres', icon: 'crosshair', color: '#2c3e50' },
-            { id: '2', name: 'Lemat', priceMax: 160.00, priceMin: 100.00, category: 'Revólveres', icon: 'crosshair', color: '#1a1a1a' },
-            { id: '3', name: 'Vaqueiro', priceMax: 110.00, priceMin: 50.00, category: 'Revólveres', icon: 'crosshair', color: '#95a5a6' },
-            { id: '4', name: 'DoubleAction', priceMax: 140.00, priceMin: 80.00, category: 'Revólveres', icon: 'crosshair', color: '#b59b56' },
-            { id: '19', name: 'Schofield', priceMax: 150.00, priceMin: 90.00, category: 'Revólveres', icon: 'crosshair', color: '#2c3e50' }, // Restaurado
+            { id: '1', name: 'Navy', priceMax: 170.00, priceMin: 120.00, priceNormal: 145.00, category: 'Revólveres', icon: 'crosshair', color: '#2c3e50' },
+            { id: '2', name: 'Lemat', priceMax: 160.00, priceMin: 100.00, priceNormal: 130.00, category: 'Revólveres', icon: 'crosshair', color: '#1a1a1a' },
+            { id: '3', name: 'Vaqueiro', priceMax: 110.00, priceMin: 50.00, priceNormal: 80.00, category: 'Revólveres', icon: 'crosshair', color: '#95a5a6' },
+            { id: '4', name: 'DoubleAction', priceMax: 140.00, priceMin: 80.00, priceNormal: 110.00, category: 'Revólveres', icon: 'crosshair', color: '#b59b56' },
 
             // RIFLES & REPETIÇÃO
-            { id: '5', name: 'Springfield', priceMax: 280.00, priceMin: 220.00, category: 'Rifles', icon: 'target', color: '#5d4037' },
-            { id: '6', name: 'Evans', priceMax: 310.00, priceMin: 250.00, category: 'Rifles', icon: 'target', color: '#1a1a1a' },
-            { id: '7', name: 'Carbine', priceMax: 190.00, priceMin: 120.00, category: 'Rifles', icon: 'target', color: '#5d4037' },
-            { id: '8', name: 'RollingBlock', priceMax: 600.00, priceMin: 450.00, category: 'Rifles', icon: 'target', color: '#2c3e50' },
-            { id: '9', name: 'Winchester', priceMax: 350.00, priceMin: 250.00, category: 'Rifles', icon: 'target', color: '#5d4037' },
-            { id: '10', name: 'Ferrolho', priceMax: 350.00, priceMin: 250.00, category: 'Rifles', icon: 'target', color: '#1a1a1a' },
-            { id: '20', name: 'Lancaster', priceMax: 240.00, priceMin: 180.00, category: 'Rifles', icon: 'target', color: '#5d4037' }, // Restaurado
-            { id: '21', name: 'Litchfield', priceMax: 260.00, priceMin: 190.00, category: 'Rifles', icon: 'target', color: '#5d4037' }, // Restaurado
-            { id: '22', name: 'Varmint', priceMax: 180.00, priceMin: 120.00, category: 'Rifles', icon: 'target', color: '#1a1a1a' }, // Restaurado
+            { id: '5', name: 'Springfield', priceMax: 280.00, priceMin: 220.00, priceNormal: 250.00, category: 'Rifles', icon: 'target', color: '#5d4037' },
+            { id: '6', name: 'Evans', priceMax: 310.00, priceMin: 250.00, priceNormal: 280.00, category: 'Rifles', icon: 'target', color: '#1a1a1a' },
+            { id: '7', name: 'Carbine', priceMax: 190.00, priceMin: 120.00, priceNormal: 155.00, category: 'Rifles', icon: 'target', color: '#5d4037' },
+            { id: '8', name: 'RollingBlock', priceMax: 600.00, priceMin: 450.00, priceNormal: 525.00, category: 'Rifles', icon: 'target', color: '#2c3e50' },
+            { id: '9', name: 'Winchester', priceMax: 350.00, priceMin: 250.00, priceNormal: 300.00, category: 'Rifles', icon: 'target', color: '#5d4037' },
+            { id: '10', name: 'Ferrolho', priceMax: 350.00, priceMin: 250.00, priceNormal: 300.00, category: 'Rifles', icon: 'target', color: '#1a1a1a' },
 
-            // ESCOPETAS (Restaurado Categoria)
-            { id: '23', name: 'Pump-Action', priceMax: 200.00, priceMin: 140.00, category: 'Escopetas', icon: 'shield', color: '#2c3e50' },
-            { id: '24', name: 'Semi-Auto', priceMax: 280.00, priceMin: 210.00, category: 'Escopetas', icon: 'shield', color: '#1a1a1a' },
-            { id: '25', name: 'Cano Duplo', priceMax: 160.00, priceMin: 100.00, category: 'Escopetas', icon: 'shield', color: '#5d4037' },
-            { id: '26', name: 'Serrada', priceMax: 130.00, priceMin: 80.00, category: 'Escopetas', icon: 'shield', color: '#5d4037' },
+            // PISTOLAS / OUTROS
+            { id: '11', name: 'Semi Auto', priceMax: 160.00, priceMin: 100.00, priceNormal: 130.00, category: 'Pistolas', icon: 'hexagon', color: '#2c3e50' },
 
-            // PISTOLAS (Restaurado Categoria)
-            { id: '27', name: 'Volcanic', priceMax: 150.00, priceMin: 90.00, category: 'Pistolas', icon: 'hexagon', color: '#2c3e50' },
-            { id: '28', name: 'Mauser', priceMax: 250.00, priceMin: 180.00, category: 'Pistolas', icon: 'hexagon', color: '#1a1a1a' },
-            // Semi Auto removida conforme pedido anterior
-
-            // OUTROS / ACESSÓRIOS
-            { id: '12', name: 'Pano de Arma', priceMax: 5.00, priceMin: 5.00, category: 'Outros', icon: 'square', color: '#d8cba8' },
-            { id: '29', name: 'Óleo de Arma', priceMax: 5.00, priceMin: 5.00, category: 'Outros', icon: 'wrench', color: '#1a1a1a' }, // Restaurado
-            { id: '30', name: 'Arco', priceMax: 140.00, priceMin: 90.00, category: 'Outros', icon: 'star', color: '#5d4037' }, // Restaurado
+            // OUTROS
+            { id: '12', name: 'Pano de Arma', priceMax: 5.00, priceMin: 5.00, priceNormal: 5.00, category: 'Outros', icon: 'square', color: '#d8cba8' },
 
             // MUNIÇÃO
-            { id: '13', name: 'Repetidora', priceMax: 5.50, priceMin: 4.50, category: 'Munição', icon: 'triangle', color: '#b59b56' },
-            { id: '14', name: 'Escopeta', priceMax: 6.50, priceMin: 5.50, category: 'Munição', icon: 'shield', color: '#660000' },
-            { id: '15', name: 'Pistola', priceMax: 5.10, priceMin: 4.10, category: 'Munição', icon: 'square', color: '#95a5a6' },
-            { id: '16', name: 'Revólver', priceMax: 5.10, priceMin: 4.10, category: 'Munição', icon: 'circle-dot', color: '#2c3e50' },
-            { id: '17', name: 'Rifle', priceMax: 5.85, priceMin: 4.85, category: 'Munição', icon: 'triangle', color: '#5d4037' },
-            { id: '18', name: 'Antipraga', priceMax: 5.20, priceMin: 4.20, category: 'Munição', icon: 'circle-dot', color: '#1a1a1a' },
+            { id: '13', name: 'Repetidora', priceMax: 5.50, priceMin: 4.50, priceNormal: 5.00, category: 'Munição', icon: 'triangle', color: '#b59b56' },
+            { id: '14', name: 'Escopeta', priceMax: 6.50, priceMin: 5.50, priceNormal: 6.00, category: 'Munição', icon: 'shield', color: '#660000' },
+            { id: '15', name: 'Pistola', priceMax: 5.10, priceMin: 4.10, priceNormal: 4.60, category: 'Munição', icon: 'square', color: '#95a5a6' },
+            { id: '16', name: 'Revólver', priceMax: 5.10, priceMin: 4.10, priceNormal: 4.60, category: 'Munição', icon: 'circle-dot', color: '#2c3e50' },
+            { id: '17', name: 'Rifle', priceMax: 5.85, priceMin: 4.85, priceNormal: 5.35, category: 'Munição', icon: 'triangle', color: '#5d4037' },
+            { id: '18', name: 'Antipraga', priceMax: 5.20, priceMin: 4.20, priceNormal: 4.70, category: 'Munição', icon: 'circle-dot', color: '#1a1a1a' },
         ];
 
-        // CRAFTING RECIPES DATABASE (Atualizado com nomes novos)
+        // CRAFTING RECIPES DATABASE
         const RECIPES = [
-            // ARMAS
+            // --- ARMAS (Montagem Final) ---
+            // Rifles
             { name: "Ferrolho", category: "Armas", materials: { "Rifle Barrel": 1, "Rifle Receiver": 1, "Rifle Stock": 1, "Minério de Aço": 1 } },
-            { name: "Carbine", category: "Armas", materials: { "Repeater Barrel": 1, "Repeater Receiver": 1, "Repeater Stock": 1, "Minério de Aço": 1 } },
             { name: "RollingBlock", category: "Armas", materials: { "Rifle Barrel": 1, "Rifle Receiver": 1, "Rifle Stock": 1, "Minério de Aço": 1 } },
-            { name: "Lemat", category: "Armas", materials: { "Revolver Barrel": 1, "Revolver Cylinder": 1, "Revolver Handle": 1, "Minério de Aço": 1 } },
             { name: "Springfield", category: "Armas", materials: { "Rifle Barrel": 1, "Rifle Receiver": 1, "Rifle Stock": 1, "Minério de Aço": 1 } },
+            // Repetidores
+            { name: "Carbine", category: "Armas", materials: { "Repeater Barrel": 1, "Repeater Receiver": 1, "Repeater Stock": 1, "Minério de Aço": 1 } },
             { name: "Winchester", category: "Armas", materials: { "Repeater Barrel": 1, "Repeater Receiver": 1, "Repeater Stock": 1, "Minério de Aço": 1 } },
-            { name: "Evans", category: "Armas", materials: { "Rifle Barrel": 1, "Rifle Receiver": 1, "Rifle Stock": 1, "Minério de Aço": 1 } },
+            { name: "Evans", category: "Armas", materials: { "Repeater Barrel": 1, "Repeater Receiver": 1, "Repeater Stock": 1, "Minério de Aço": 1 } },
+            // Revólveres
+            { name: "Lemat", category: "Armas", materials: { "Revolver Barrel": 1, "Revolver Cylinder": 1, "Revolver Handle": 1, "Minério de Aço": 1 } },
             { name: "Navy", category: "Armas", materials: { "Revolver Barrel": 1, "Revolver Cylinder": 1, "Revolver Handle": 1, "Minério de Aço": 1 } },
             { name: "Vaqueiro", category: "Armas", materials: { "Revolver Barrel": 1, "Revolver Cylinder": 1, "Revolver Handle": 1, "Minério de Ferro": 1 } },
             { name: "DoubleAction", category: "Armas", materials: { "Revolver Barrel": 1, "Revolver Cylinder": 1, "Revolver Handle": 1, "Minério de Ferro": 1 } },
-            { name: "Schofield", category: "Armas", materials: { "Revolver Barrel": 1, "Revolver Cylinder": 1, "Revolver Handle": 1, "Minério de Aço": 1 } },
-            { name: "Lancaster", category: "Armas", materials: { "Repeater Barrel": 1, "Repeater Receiver": 1, "Repeater Stock": 1, "Minério de Aço": 1 } },
-            { name: "Pump-Action", category: "Armas", materials: { "Shotgun Barrel": 1, "Shotgun Receiver": 1, "Shotgun Stock": 1, "Minério de Aço": 1 } },
-            { name: "Serrada", category: "Armas", materials: { "Shotgun Barrel": 1, "Shotgun Receiver": 1, "Shotgun Grip": 1, "Minério de Ferro": 1 } },
-            { name: "Volcanic", category: "Armas", materials: { "Pistol Barrel": 1, "Pistol Receiver": 1, "Pistol Grip": 1, "Minério de Ferro": 1 } },
-            { name: "Mauser", category: "Armas", materials: { "Pistol Barrel": 1, "Pistol Slide": 1, "Pistol Grip": 1, "Minério de Aço": 1 } },
+            // Pistolas
+            { name: "Semi Auto", category: "Armas", materials: { "Pistol Barrel": 1, "Pistol Slide": 1, "Pistol Grip": 1, "Minério de Aço": 1 } },
             
-            // COMPONENTES
+            // --- COMPONENTES ---
+            // Revólver
             { name: "Revolver Cylinder", category: "Componentes", materials: { "Barra de Ferro": 2 } },
             { name: "Revolver Handle", category: "Componentes", materials: { "Madeira": 2 } },
             { name: "Revolver Barrel", category: "Componentes", materials: { "Barra de Ferro": 2 } },
+            // Rifle
             { name: "Rifle Receiver", category: "Componentes", materials: { "Barra de Ferro": 3 } },
             { name: "Rifle Barrel", category: "Componentes", materials: { "Barra de Aço": 3 } },
             { name: "Rifle Stock", category: "Componentes", materials: { "Madeira": 3 } },
+            // Repetidor
             { name: "Repeater Barrel", category: "Componentes", materials: { "Barra de Ferro": 2 } },
             { name: "Repeater Receiver", category: "Componentes", materials: { "Barra de Ferro": 2 } },
             { name: "Repeater Stock", category: "Componentes", materials: { "Madeira": 2 } },
+            // Pistola (Novos)
+            { name: "Pistol Barrel", category: "Componentes", materials: { "Barra de Aço": 2 } },
+            { name: "Pistol Slide", category: "Componentes", materials: { "Barra de Ferro": 2 } },
+            { name: "Pistol Grip", category: "Componentes", materials: { "Madeira": 2 } },
             
-            // MUNIÇÃO
+            // --- MUNIÇÃO ---
             { name: "Repetidora", category: "Munição", materials: { "Minério de Ferro": 5, "Pólvora": 3 } },
             { name: "Rifle", category: "Munição", materials: { "Minério de Ferro": 8, "Pólvora": 5 } },
             { name: "Escopeta", category: "Munição", materials: { "Minério de Ferro": 6, "Pólvora": 6 } },
             { name: "Revólver", category: "Munição", materials: { "Minério de Ferro": 5, "Pólvora": 3 } },
             { name: "Pistola", category: "Munição", materials: { "Minério de Ferro": 5, "Pólvora": 3 } },
             
-            // OUTROS
-            { name: "Pano de Arma", category: "Outros", materials: { "Algodão": 5 } },
-            { name: "Óleo de Arma", category: "Outros", materials: { "Gordura Animal": 2 } }
+            // --- PROCESSAMENTO / FUNDIÇÃO ---
+            { name: "Barra de Aço", category: "Fundição", materials: { "Minério de Aço": 2 } },
+            { name: "Barra de Ferro", category: "Fundição", materials: { "Minério de Ferro": 2 } },
+            { name: "Pólvora", category: "Química", materials: { "Minério de Cobre": 4, "Nitrito": 4 } },
+            { name: "Pano de Arma", category: "Outros", materials: { "Algodão": 5 } }
         ];
 
         let state = {
             storeName: DEFAULT_STORE_NAME,
             storeAddress: DEFAULT_STORE_ADDRESS,
             products: JSON.parse(JSON.stringify(DEFAULT_PRODUCTS)),
-            cart: {}, // Structure now: { id: { qty: 1, useMin: false } }
+            cart: {}, 
             logo: null,
             showHeader: true,
-            showWatermark: true
-            // Removed serviceMode/Value as it is now dynamic based on cart items
+            showWatermark: true,
+            materialStock: {}
         };
 
         // Workshop State
         let workshopQueue = {}; 
-
         let tempIcon = 'crosshair';
         let tempColor = '#b59b56';
 
-        // --- Generic Dialog Logic ---
         function showDialog({ title, message, type = 'alert', onConfirm }) {
             const modal = document.getElementById('genericModal');
             const content = document.getElementById('genericModalContent');
@@ -640,39 +671,35 @@
         function closeGenericModal() {
             const modal = document.getElementById('genericModal');
             const content = document.getElementById('genericModalContent');
-            
             modal.classList.add('opacity-0', 'pointer-events-none');
             content.classList.remove('scale-100');
             content.classList.add('scale-95');
-            
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 300);
         }
-        // -----------------------------
 
         function init() {
-            const saved = localStorage.getItem('gunsmith_ledger_v2'); // New version key to force reset
+            const saved = localStorage.getItem('gunsmith_ledger_v3'); 
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
                     state = { ...state, ...parsed };
                     if(!state.storeAddress) state.storeAddress = DEFAULT_STORE_ADDRESS;
+                    if(!state.materialStock) state.materialStock = {};
                 } catch(e) { console.error("Save corrupted", e); }
             }
 
             document.getElementById('receiptAddressDate').innerText = state.storeAddress;
-            // Quote display logic removed
-
             setupPickers();
             renderAll();
             renderRecipes(); 
+            // renderWarehouse() is called on toggle
         }
 
         function renderAll() {
             renderHeader();
             renderProducts();
-            // renderServiceControls(); // Removed as it is replaced by static HTML logic
             renderReceipt();
             if (window.lucide) {
                 lucide.createIcons();
@@ -681,12 +708,11 @@
 
         function renderHeader() {
             document.getElementById('headerStoreName').innerText = state.storeName;
-            
             const logoContainer = document.getElementById('headerLogoContainer');
             if (state.logo && state.showHeader) {
                 logoContainer.innerHTML = `<img src="${state.logo}" class="w-full h-full object-cover grayscale contrast-125">`;
                 logoContainer.classList.remove('hidden');
-                logoContainer.classList.add('flex'); // Garante que apareça se houver logo
+                logoContainer.classList.add('flex');
             } else {
                 logoContainer.innerHTML = '';
                 logoContainer.classList.add('hidden');
@@ -698,18 +724,16 @@
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
             
-            const categories = ['Revólveres', 'Rifles', 'Escopetas', 'Pistolas', 'Munição', 'Outros'];
+            const categories = ['Revólveres', 'Rifles', 'Pistolas', 'Munição', 'Outros'];
             const iconsMap = { 
                 'Revólveres': 'crosshair', 
                 'Rifles': 'target', 
-                'Escopetas': 'shield',
                 'Pistolas': 'hexagon', 
                 'Munição': 'circle-dot', 
                 'Outros': 'square'
             };
 
             categories.forEach(cat => {
-                // Filter out 'Personalização' items from the grid display so they don't clutter it
                 const prods = state.products.filter(p => p.category === cat && p.category !== 'Personalização');
                 if (prods.length === 0) return;
 
@@ -722,14 +746,12 @@
                 divGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
                 
                 prods.forEach(p => {
-                    // Check cart state for this item
                     const cartItem = state.cart[p.id];
                     const qty = cartItem ? cartItem.qty : 0;
                     const isSelected = qty > 0;
                     
                     const card = document.createElement('div');
                     card.className = `relative p-4 border transition-all duration-300 cursor-pointer select-none rounded group overflow-hidden ${isSelected ? 'bg-gun-metal border-gun-brass shadow-[0_0_15px_rgba(181,155,86,0.2)]' : 'bg-black/40 border-gun-brass/20 hover:border-gun-brass/50'}`;
-                    // Clicking card adds 1 to Max price by default
                     card.onclick = () => updateCart(p.id, 1);
 
                     const corners = `
@@ -739,13 +761,18 @@
                         <div class="absolute bottom-1 right-1 w-1 h-1 rounded-full bg-gun-brass/30"></div>
                     `;
 
-                    // Format Price Display Range
-                    let priceDisplay = `$${p.priceMax.toFixed(2)}`;
+                    let priceDisplay = `<span class="text-gun-brass font-bold">$${p.priceNormal.toFixed(2)}</span>`;
                     if(p.priceMin && p.priceMin < p.priceMax) {
-                        priceDisplay = `<span class="text-green-500/80">$${p.priceMin.toFixed(2)}</span> <span class="text-xs opacity-40 mx-1">à</span> <span class="text-sm opacity-60">$${p.priceMax.toFixed(2)}</span>`;
+                        priceDisplay = `
+                            <div class="flex flex-col">
+                                <span class="text-gun-brass font-bold text-xl leading-none">$${p.priceNormal.toFixed(2)}</span>
+                                <div class="text-[9px] opacity-60 mt-1">
+                                    <span class="text-green-500/70">$${p.priceMin.toFixed(0)}</span> - <span class="text-red-400/70">$${p.priceMax.toFixed(0)}</span>
+                                </div>
+                            </div>
+                        `;
                     }
 
-                    // Format Name for Ammo
                     let displayName = p.name;
                     if(p.category === 'Munição') {
                         displayName += ` 1cx <span class="text-[0.6rem] tracking-tighter opacity-70 ml-1">(25un)</span>`;
@@ -760,7 +787,7 @@
                            <h3 class="font-western text-lg leading-none text-gun-paper tracking-wide pt-1 drop-shadow-md flex items-baseline">${displayName}</h3>
                         </div>
                         <div class="flex justify-between items-end relative z-10">
-                            <div class="font-typewriter font-bold text-gun-brass flex items-center">${priceDisplay}</div>
+                            <div class="font-typewriter flex items-center">${priceDisplay}</div>
                             
                             <div class="flex items-center space-x-1 bg-black p-1 rounded border border-gun-brass/20" onclick="event.stopPropagation()">
                                 <button onclick="updateCart('${p.id}', -1)" class="w-8 h-8 flex items-center justify-center bg-gun-blood text-white rounded-sm hover:bg-red-900 border border-black shadow-sm disabled:opacity-50 disabled:grayscale transition-colors" ${qty === 0 ? 'disabled' : ''}><i data-lucide="minus" class="w-4 h-4"></i></button>
@@ -785,22 +812,19 @@
             }
 
             const customId = `cust_${Date.now()}`;
-            
-            // Add temporary product to state
             state.products.push({
                 id: customId,
                 name: 'Personalização de arma',
                 priceMax: value,
-                priceMin: value, // Fixed price for custom entry
+                priceMin: value,
+                priceNormal: value,
                 category: 'Personalização',
                 icon: 'hammer',
                 color: '#b59b56',
                 isTemp: true
             });
 
-            // Add to cart
-            state.cart[customId] = { qty: 1, useMin: false };
-            
+            state.cart[customId] = { qty: 1, priceType: 'normal' };
             input.value = '';
             saveState();
             renderAll();
@@ -830,7 +854,7 @@
             } else watermark.classList.add('hidden');
 
             let subtotal = 0;
-            let customizationTotal = 0; // Track total value of customizations for 30% fee
+            let customizationTotal = 0; 
             let html = `
                 <table class="w-full text-left font-typewriter text-sm">
                     <thead><tr class="border-b border-gray-400 text-gray-500 text-[10px] tracking-wider"><th class="pb-1 w-8">QTD</th><th class="pb-1">ITEM</th><th class="pb-1 text-right">VALOR</th></tr></thead>
@@ -843,28 +867,36 @@
                     hasItems = true;
                     const prod = state.products.find(p => p.id === id);
                     if (prod) {
-                        // Determine price based on 'useMin' flag
-                        const currentPrice = item.useMin ? prod.priceMin : prod.priceMax;
+                        let currentPrice = prod.priceNormal;
+                        if (item.priceType === 'max') currentPrice = prod.priceMax;
+                        if (item.priceType === 'min') currentPrice = prod.priceMin;
+
                         const total = currentPrice * item.qty;
                         subtotal += total;
 
-                        // Calculate customization base for service fee
                         if (prod.category === 'Personalização') {
                             customizationTotal += total;
                         }
 
-                        // Discount toggle button style
                         let discBtn = '';
-                        // Only show Min/Max toggle if prices differ and not a custom item
                         if (prod.priceMin !== prod.priceMax) {
-                             const discBtnClass = item.useMin 
-                                ? "text-[9px] bg-green-800 text-white px-1 rounded ml-2 cursor-pointer hover:bg-green-700" 
-                                : "text-[9px] bg-gray-300 text-gray-600 px-1 rounded ml-2 cursor-pointer hover:bg-gray-400";
-                             const discBtnText = item.useMin ? "MÍN" : "MÁX";
-                             discBtn = `<button onclick="toggleItemPrice('${id}')" class="${discBtnClass}" title="Alternar Preço Máximo/Mínimo">${discBtnText}</button>`;
+                             let btnClass = "bg-gray-300 text-gray-600 hover:bg-gray-400";
+                             let btnText = "NORM";
+                             let btnTitle = "Preço Normal";
+
+                             if(item.priceType === 'max') {
+                                 btnClass = "bg-red-800 text-white hover:bg-red-700";
+                                 btnText = "MÁX";
+                                 btnTitle = "Preço Máximo";
+                             } else if (item.priceType === 'min') {
+                                 btnClass = "bg-green-800 text-white hover:bg-green-700";
+                                 btnText = "MÍN";
+                                 btnTitle = "Preço Mínimo";
+                             }
+
+                             discBtn = `<button onclick="cycleItemPrice('${id}')" class="text-[9px] px-1 rounded ml-2 cursor-pointer ${btnClass} font-bold w-10 text-center" title="${btnTitle}">${btnText}</button>`;
                         }
 
-                        // Name format for receipt
                         let receiptName = prod.name;
                         if(prod.category === 'Munição') receiptName += ' 1cx';
 
@@ -891,11 +923,8 @@
                 container.innerHTML = html;
             }
 
-            // Calculation Logic
-            // Service fee is ALWAYS 30% of customization total
-            const serviceAmount = customizationTotal * 0.30;
-            const serviceLabelText = serviceAmount > 0 ? "MÃO DE OBRA (30%):" : "TAXA DE SERVIÇO:";
-
+            const serviceAmount = customizationTotal * 0.35;
+            const serviceLabelText = serviceAmount > 0 ? "MÃO DE OBRA (35%):" : "TAXA DE SERVIÇO:";
             const finalTotal = subtotal + serviceAmount;
 
             subtotalEl.innerText = `$${subtotal.toFixed(2)}`;
@@ -906,23 +935,24 @@
 
         function updateCart(id, change) {
             if (!state.cart[id]) {
-                // Initialize item in cart (default to Max Price)
-                state.cart[id] = { qty: 0, useMin: false };
+                state.cart[id] = { qty: 0, priceType: 'normal' };
             }
-            
             state.cart[id].qty += change;
-            
             if (state.cart[id].qty <= 0) {
                 delete state.cart[id];
             }
-            
             saveState();
             renderAll();
         }
 
-        function toggleItemPrice(id) {
+        function cycleItemPrice(id) {
             if (state.cart[id]) {
-                state.cart[id].useMin = !state.cart[id].useMin;
+                const current = state.cart[id].priceType || 'normal';
+                let next = 'normal';
+                if (current === 'normal') next = 'max';
+                else if (current === 'max') next = 'min';
+                else if (current === 'min') next = 'normal';
+                state.cart[id].priceType = next;
                 saveState();
                 renderAll();
             }
@@ -935,12 +965,8 @@
                  paper.style.transform = 'scale(0.95) rotate(1deg)';
                  
                  setTimeout(() => {
-                     // Filter out temporary customization items from products array to clean up memory
                      state.products = state.products.filter(p => !p.isTemp);
-                     
                      state.cart = {};
-                     // state.serviceMode/Value removed
-                     
                      saveState();
                      renderAll();
                      paper.style.transform = 'rotate(0.5deg)'; 
@@ -950,18 +976,26 @@
 
         function downloadReceipt() {
             const element = document.getElementById('receiptArea');
-            // Temporarily remove shadow for cleaner image
+            const cartContainer = document.getElementById('cartItems');
             const originalShadow = element.style.boxShadow;
+            
             element.style.boxShadow = 'none';
+            element.style.height = 'auto'; 
+            cartContainer.style.overflow = 'visible'; 
+            cartContainer.style.height = 'auto';
 
             html2canvas(element, { 
                 scale: 2, 
-                backgroundColor: null, // Transparent background outside the receipt
+                backgroundColor: null, 
                 useCORS: true, 
                 ignoreElements: (el) => el.getAttribute('data-html2canvas-ignore') === 'true' 
             })
             .then(canvas => {
                 element.style.boxShadow = originalShadow;
+                element.style.height = 'calc(100vh - 150px)'; 
+                cartContainer.style.overflow = 'auto';
+                cartContainer.style.height = '';
+
                 const link = document.createElement('a');
                 const safeName = state.storeName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
                 link.download = `recibo_${safeName}_${Date.now()}.png`;
@@ -969,12 +1003,14 @@
                 link.click();
             }).catch(err => {
                 element.style.boxShadow = originalShadow;
+                element.style.height = 'calc(100vh - 150px)';
+                cartContainer.style.overflow = 'auto';
                 showDialog({ title: 'Erro', message: "Erro ao gerar imagem: " + err });
             });
         }
 
         function saveState() {
-            localStorage.setItem('gunsmith_ledger_v2', JSON.stringify(state));
+            localStorage.setItem('gunsmith_ledger_v3', JSON.stringify(state));
         }
 
         function toggleSettings() {
@@ -1078,17 +1114,13 @@
             const priceMax = parseFloat(document.getElementById('newProdPriceMax').value);
             const cat = document.getElementById('newProdCat').value;
             
-            // Default min price to same as max if not provided in simple add mode, 
-            // or we could add a secondary input. For simplicity in "Quick Add", we assume fixed price.
-            // If user wants specific range, they should edit in JSON or we add a field.
-            // Let's assume priceMax is the main price.
-            
             if (name && !isNaN(priceMax)) {
                 state.products.push({ 
                     id: `gun_${Date.now()}`, 
                     name, 
                     priceMax, 
-                    priceMin: priceMax, // Default same
+                    priceMin: priceMax, 
+                    priceNormal: priceMax,
                     category: cat, 
                     icon: tempIcon, 
                     color: tempColor 
@@ -1207,7 +1239,7 @@
                 title: 'Reiniciar Tudo',
                 message: "Apagar todos os dados personalizados e armas criadas?",
                 onConfirm: () => {
-                      localStorage.removeItem('gunsmith_ledger_v2');
+                      localStorage.removeItem('gunsmith_ledger_v3');
                       location.reload();
                 }
             });
@@ -1221,6 +1253,69 @@
             saveState();
             toggleSettings();
             renderAll();
+        }
+
+        // ============================================
+        // WAREHOUSE / STOCK LOGIC
+        // ============================================
+
+        function toggleWarehouse() {
+            const modal = document.getElementById('warehouseModal');
+            const content = document.getElementById('warehouseModalContent');
+            const isHidden = modal.classList.contains('hidden');
+
+            if (isHidden) {
+                modal.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                });
+                renderWarehouseStock();
+            } else {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+        }
+
+        function renderWarehouseStock() {
+            const rawList = document.getElementById('warehouseRawList');
+            const compList = document.getElementById('warehouseComponentList');
+            
+            rawList.innerHTML = '';
+            compList.innerHTML = '';
+
+            const allMaterials = new Set();
+            const definedComponents = new Set(RECIPES.map(r => r.name));
+
+            // Gather all materials from recipes
+            RECIPES.forEach(r => {
+                Object.keys(r.materials).forEach(m => allMaterials.add(m));
+            });
+
+            // Split into Raw vs Components
+            const rawMaterials = [...allMaterials].filter(m => !definedComponents.has(m)).sort();
+            const components = [...allMaterials].filter(m => definedComponents.has(m)).sort();
+
+            const createRow = (name, isRaw) => {
+                const currentVal = state.materialStock[name] || 0;
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center p-2 border-b border-gun-brass/10 hover:bg-gun-brass/5 transition-colors";
+                div.innerHTML = `
+                    <span class="font-typewriter text-gun-paper text-sm">${name}</span>
+                    <input type="number" value="${currentVal}" onchange="updateStock('${name}', this.value)" 
+                        class="w-20 bg-black border border-gun-brass/30 text-center text-gun-brass font-bold rounded focus:border-gun-brass outline-none" placeholder="0">
+                `;
+                return div;
+            };
+
+            if(rawMaterials.length === 0) rawList.innerHTML = '<div class="text-white/30 italic text-xs">Nenhum item.</div>';
+            rawMaterials.forEach(m => rawList.appendChild(createRow(m, true)));
+
+            if(components.length === 0) compList.innerHTML = '<div class="text-white/30 italic text-xs">Nenhum componente.</div>';
+            components.forEach(m => compList.appendChild(createRow(m, false)));
         }
 
         // ============================================
@@ -1260,7 +1355,6 @@
                 return;
             }
 
-            // Group by Category
             const categories = {};
             filtered.forEach(r => {
                 if(!categories[r.category]) categories[r.category] = [];
@@ -1278,7 +1372,6 @@
                     el.className = "flex justify-between items-center p-3 bg-black/40 hover:bg-black/60 border border-gun-brass/10 hover:border-gun-brass/40 rounded group cursor-pointer transition-all";
                     el.onclick = () => addToWorkshop(r.name);
 
-                    // Material Preview
                     const matsPreview = Object.entries(r.materials).map(([k,v]) => `${v}x ${k}`).join(', ');
 
                     el.innerHTML = `
@@ -1322,7 +1415,7 @@
             if (Object.keys(workshopQueue).length === 0) {
                 queueDiv.innerHTML = '<p class="text-gun-paper/30 font-typewriter italic text-center py-4">Selecione projetos à esquerda para começar.</p>';
                 totalSpan.innerText = "0";
-                calculateMaterials(); // Clear lists
+                calculateMaterials(); 
                 return;
             }
 
@@ -1344,81 +1437,120 @@
             if(window.lucide) lucide.createIcons();
         }
 
-        // Recursive function to break down materials
+        function updateStock(materialName, value) {
+            const val = parseInt(value) || 0;
+            state.materialStock[materialName] = val;
+            saveState();
+            // Re-render only if workshop open, warehouse uses value directly
+            const workshopModal = document.getElementById('workshopModal');
+            if (!workshopModal.classList.contains('hidden')) {
+                calculateMaterials(); 
+            }
+        }
+
         function getRawIngredients(itemName, quantity, rawTotals) {
             const recipe = RECIPES.find(r => r.name === itemName);
             
             if (recipe) {
-                // If it has a recipe, recurse deeper
                 Object.entries(recipe.materials).forEach(([matName, matQty]) => {
                     getRawIngredients(matName, matQty * quantity, rawTotals);
                 });
             } else {
-                // If no recipe, it is a raw material
                 if (!rawTotals[itemName]) rawTotals[itemName] = 0;
                 rawTotals[itemName] += quantity;
             }
         }
 
         function calculateMaterials() {
-            const matsDiv = document.getElementById('workshopMaterials');
-            const rawMatsDiv = document.getElementById('workshopRawMaterials');
-            
-            const directAggregates = {};
-            const rawAggregates = {};
+            const analysisDiv = document.getElementById('workshopAnalysis');
+            analysisDiv.innerHTML = '';
 
-            // 1. Calculate Direct Materials
-            Object.entries(workshopQueue).forEach(([name, qty]) => {
-                const recipe = RECIPES.find(r => r.name === name);
+            if (Object.keys(workshopQueue).length === 0) {
+                analysisDiv.innerHTML = '<div class="text-center text-gun-paper/30 italic font-typewriter text-xs">Nenhum cálculo disponível.</div>';
+                return;
+            }
+
+            // 1. Calculate DIRECT components needed
+            const directNeeds = {};
+            Object.entries(workshopQueue).forEach(([itemName, itemQty]) => {
+                const recipe = RECIPES.find(r => r.name === itemName);
                 if (recipe) {
                     Object.entries(recipe.materials).forEach(([matName, matQty]) => {
-                        if (!directAggregates[matName]) directAggregates[matName] = 0;
-                        directAggregates[matName] += (matQty * qty);
+                        if (!directNeeds[matName]) directNeeds[matName] = 0;
+                        directNeeds[matName] += (matQty * itemQty);
                     });
-                    
-                    // 2. Calculate Raw Materials Recursively
-                    getRawIngredients(name, qty, rawAggregates);
                 }
             });
 
-            // Render Direct
-            matsDiv.innerHTML = '';
-            if (Object.keys(directAggregates).length === 0) {
-                matsDiv.innerHTML = '<div class="col-span-2 text-center text-gun-paper/30 italic font-typewriter">Nenhum componente necessário.</div>';
-            } else {
-                Object.entries(directAggregates).forEach(([mat, count]) => {
-                    const el = document.createElement('div');
-                    el.className = "flex justify-between items-center p-2 bg-black/40 border border-gun-brass/10 rounded shadow-sm";
-                    el.innerHTML = `
-                        <span class="text-gun-paper/80 font-typewriter text-xs uppercase tracking-wide">${mat}</span>
-                        <span class="text-gun-brass font-bold font-western text-md drop-shadow-sm">${count}x</span>
-                    `;
-                    matsDiv.appendChild(el);
-                });
-            }
+            // 2. Render Analysis Rows
+            Object.entries(directNeeds).sort().forEach(([matName, requiredQty]) => {
+                const currentStock = state.materialStock[matName] || 0;
+                const isEnough = currentStock >= requiredQty;
+                const statusColor = isEnough ? 'text-green-400' : 'text-red-400';
+                const statusIcon = isEnough ? 'check-circle' : 'alert-circle';
+                
+                // Main Component Row
+                const row = document.createElement('div');
+                row.className = "bg-black/40 border border-gun-brass/10 rounded p-3";
+                
+                let rawAnalysisHTML = '';
 
-            // Render Raw
-            rawMatsDiv.innerHTML = '';
-            if (Object.keys(rawAggregates).length === 0) {
-                rawMatsDiv.innerHTML = '<div class="text-center text-gun-paper/30 italic font-typewriter text-xs">Nenhuma matéria-prima.</div>';
-            } else {
-                // Sort alphabetically for easier reading
-                Object.entries(rawAggregates).sort().forEach(([mat, count]) => {
-                    const el = document.createElement('div');
-                    el.className = "flex justify-between items-center p-2 border-b border-white/5 last:border-0";
-                    el.innerHTML = `
-                        <span class="text-blue-200/80 font-typewriter text-sm uppercase tracking-wider pl-2 flex items-center gap-2"><div class="w-1 h-1 bg-blue-400 rounded-full"></div> ${mat}</span>
-                        <span class="text-blue-300 font-bold font-typewriter text-md">${count}x</span>
-                    `;
-                    rawMatsDiv.appendChild(el);
-                });
-            }
+                // If missing, calculate raw materials needed for the MISSING amount
+                if (!isEnough) {
+                    const missingQty = requiredQty - currentStock;
+                    
+                    // Find recipe for this component
+                    const compRecipe = RECIPES.find(r => r.name === matName);
+                    
+                    if (compRecipe) {
+                        let rawList = `<ul class="mt-2 pl-4 text-xs font-typewriter border-l border-red-500/30 space-y-1">
+                                        <li class="text-red-300/70 italic mb-1">Para produzir ${missingQty}x faltantes:</li>`;
+                        
+                        Object.entries(compRecipe.materials).forEach(([rawName, rawQty]) => {
+                            const totalRawNeeded = rawQty * missingQty;
+                            const rawStock = state.materialStock[rawName] || 0;
+                            const rawEnough = rawStock >= totalRawNeeded;
+                            const rawColor = rawEnough ? 'text-green-500' : 'text-red-500';
+                            
+                            rawList += `
+                                <li class="flex justify-between items-center">
+                                    <span class="text-gun-paper/80">${rawName}:</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-gun-paper/40">${rawStock}</span>
+                                        <span class="${rawColor}">/ ${totalRawNeeded}</span>
+                                    </div>
+                                </li>
+                            `;
+                        });
+                        rawList += '</ul>';
+                        rawAnalysisHTML = rawList;
+                    } else {
+                        rawAnalysisHTML = `<div class="mt-2 pl-4 text-xs font-typewriter text-red-400/60 italic">Matéria-prima base insuficiente. Necessário adquirir.</div>`;
+                    }
+                }
+
+                row.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-typewriter text-gun-paper text-sm uppercase tracking-wide flex items-center gap-2">
+                            <i data-lucide="${statusIcon}" class="w-4 h-4 ${statusColor}"></i> ${matName}
+                        </span>
+                        <div class="flex items-center gap-2 font-western">
+                            <span class="text-xs text-gun-paper/40 mr-1">ESTOQUE:</span>
+                            <span class="text-gun-brass font-bold text-lg">${currentStock}</span>
+                            <span class="text-gun-paper/50 text-lg">/ ${requiredQty}</span>
+                        </div>
+                    </div>
+                    ${rawAnalysisHTML}
+                `;
+                analysisDiv.appendChild(row);
+            });
+            
+            if(window.lucide) lucide.createIcons();
         }
 
         function clearWorkshop() {
             workshopQueue = {};
             renderWorkshopQueue();
-            // calculateMaterials is called inside renderWorkshopQueue when empty
         }
 
         init();
